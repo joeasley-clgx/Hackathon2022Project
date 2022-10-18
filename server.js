@@ -9,7 +9,7 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 app.get('/', (req, res) => {
-    res.render("home", { text: "Test" });
+    res.render("home", { title: "Home" });
 });
 
 app.use('/dashboard', dashboardRouter);

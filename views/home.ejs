@@ -1,32 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.css">
-    
-    <!-- CoreLogic UI CSS -->
-    <link rel="stylesheet" href="/css/corelogic-ui.css">
-</head>
+<%- include('partials/head') %>
 <body>
-    <nav class="cl-main-nav navbar navbar-dark navbar-expand-md"><a href="#" class="navbar-brand"><span class="navbar-logo"></span>Cheaper By the Half Dozen</a>
-        <div class="navbar-toggler">
-            <nav aria-labelledby="navbarMobileToggler" class="nav"><a id="navbarMobileToggler" aria-expanded="false" data-toggle="collapse" href="#navbarSupportedContent" class="nav-item nav-link collapsed menu-toggle"><span class="fa fa-bars"><span class="sr-only">Toggle Navigation</span></span></a></nav>
-        </div>
-        <div id="navbarSupportedContent" class="navbar-collapse collapse"></div>
-    </nav>
+    <%- include('partials/navbar') %>
 
     <h1>Hi <%= locals.text %> </h1>
-    
-    <!-- jQuery first and then Bootstrap JS. -->
-    <script src="/scripts/jquery.js"></script>
-    <script src="/scripts/bootstrap.bundle.js"></script>
-    <script src="/scripts/daterangepicker.js"></script>
-    <script src="/scripts/moment.min.js"></script>
-    <script src="/scripts/corelogic-ui.js"></script>
 </body>
 </html>
