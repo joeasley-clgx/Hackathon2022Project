@@ -1,9 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('partials/head') %>
-<body>
-    <%- include('partials/navbar') %>
+    <head>
+        <%- include('partials/head') %>
 
-    <h1>Cool Info</h1>
-</body>
+        <link rel="stylesheet" href="/css/dashboard.css">
+        <script src="/scripts/dashboard.js" defer></script>
+    </head>
+    <body>
+        <%- include('partials/navbar') %>
+
+        <main class="container">
+            <div class="page-title">
+                <div class="headings">
+                    <h1 class="header"><%= locals.header %></h1>
+                    <div class="sub-heading"><%= locals.subHeader %></div>
+                </div>
+            </div>
+            <br>
+
+            <section id="charts">
+                <div class="card card-tile">
+                    <div class="card-body">
+                        <h2 class="card-title">CPU Usage</h2>
+                        
+                        <h5 class="card-subtitle mb-2 text-muted">Daily</h5>
+                        <div class="cpu-chart">
+                            <canvas id="daily-chart"></canvas>
+                        </div>
+                        <hr>
+                        <h5 class="card-subtitle mb-2 text-muted">Weekly</h5>
+                        <div class="cpu-chart">
+                            <canvas id="weekly-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card card-tile">
+                    <div class="card-body">
+                        <h2 class="card-title">Optimal Number of Machines</h2>
+
+                        <div class="optimal-chart">
+                            <canvas id="optimal-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <script>
+            let targetedFarm = "fnccuweb<%= locals.subHeader %>".toLowerCase();
+        </script>
+    </body>
 </html>
