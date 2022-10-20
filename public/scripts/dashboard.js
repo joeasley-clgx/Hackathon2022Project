@@ -31,15 +31,24 @@ function getDataSets(name, startTime, endTime) {
             .filter(p => new Date(p.interval.endTime) >= startTime && new Date(p.interval.endTime) < endTime)
             .map(p => { return { x: p.interval.endTime, y: p.value.doubleValue * 100 }; });
 
-        const isGreen = label.startsWith(name + 'g')
-
-        dataSet.push({ 
-            label: (isGreen ? 'Green ' : 'Blue ') + parseInt(label.substr(-2)),
-            data: points, 
-            backgroundColor: isGreen ? '#7bea9d' : '#5766c4',
-            borderColor: isGreen ? '#7bea9d' : '#5766c4',
-            borderWidth: 1
-        });
+        if (label.startsWith(name + 'g')){
+            dataSet.unshift({ 
+                label: 'Green ' + parseInt(label.substr(-2)),
+                data: points, 
+                backgroundColor: '#7bea9d',
+                borderColor: '#7bea9d',
+                borderWidth: 1
+            });
+        }
+        else {
+            dataSet.push({ 
+                label: 'Blue ' + parseInt(label.substr(-2)),
+                data: points, 
+                backgroundColor: '#5766c4',
+                borderColor: '#5766c4',
+                borderWidth: 1
+            });
+        }
     }
 
     return dataSet;
