@@ -1,4 +1,4 @@
-let idleThreshold; // set by input element
+let idleThreshold = 4.5; // set by input element
 let nodeCostPerYear = 6077.76;
 let THE_DATA;
 
@@ -77,7 +77,7 @@ function updateDailyChart() {
 }
 
 function updateWeeklyChart() {
-    weeklyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-12T00:00:00'), new Date('2022-10-19T12:00:00'));
+    weeklyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-13T12:00:00'), new Date('2022-10-20T12:00:00'));
     weeklyChart.update();
 }
 
@@ -90,7 +90,7 @@ function updateOptimalChart() {
 }
 
 function updateIdleThreshold() {
-    idleThreshold = document.getElementById("idleThresholdInput").value;
+    // idleThreshold = document.getElementById("idleThresholdInput").value;
     updateOptimalChart();
 }
 
@@ -99,7 +99,7 @@ function updateCostAnalysis(totalNodesCount, unusedNodesCount) {
     document.getElementById("unusedNodeCostField").textContent = (unusedNodesCount * nodeCostPerYear).toLocaleString();
 }
 
-document.getElementById("idleThresholdInput").addEventListener("change", updateIdleThreshold);
+// document.getElementById("idleThresholdInput").addEventListener("change", updateIdleThreshold);
 
 // Charts
 const dailyChart = new Chart(document.getElementById('daily-chart'), {
@@ -116,7 +116,6 @@ const dailyChart = new Chart(document.getElementById('daily-chart'), {
             y: {
                 ticks: {
                     callback: function (value) {
-                        console.log(value.toString().substr(0, 5))
                         return value.toString().substr(0, 5) + '%';
                     }
                 }
@@ -129,6 +128,7 @@ const weeklyChart = new Chart(document.getElementById('weekly-chart'), {
     type: 'line',
     options: {
         responsive: true,
+        pointRadius: 1,
         scales: {
             x: {
                 type: 'time',
@@ -139,7 +139,6 @@ const weeklyChart = new Chart(document.getElementById('weekly-chart'), {
             y: {
                 ticks: {
                     callback: function (value) {
-                        console.log(value.toString().substr(0, 5))
                         return value.toString().substr(0, 5) + '%';
                     }
                 }
@@ -151,9 +150,9 @@ const weeklyChart = new Chart(document.getElementById('weekly-chart'), {
 const optimalChart = new Chart(document.getElementById('optimal-chart'), {
     type: 'doughnut',
     data: {
-        labels: ['Used Nodes', 'Unused Nodes'],
+        labels: ['Used Farm', 'Unused Farm'],
         datasets: [{
-            label: '# of Nodes',
+            label: '# of Farms',
             data: [5, 1],
             backgroundColor: [
                 '#7bea9d50',

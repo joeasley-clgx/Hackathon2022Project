@@ -9,32 +9,37 @@
     <body class="layout-full-page">
         <%- include('partials/navbar') %>
 
-        <div class="gradient-blue-bg layout-full-page-content" style="background-image: url('../images/serverRoom.jpg');">
+        <div class="layout-full-page-content">
             <div class="container">
                 <div class="row">
-                    <div class="col-12 col-lg-6 mx-auto">
-                        <h1 class="text-white text-center pb-5">Choose Your Environment & Node</h1>
+                    <div class="col-12 col-lg-5 mx-auto">
+                        <h1 class="text-white text-center pb-5">Choose Your Environment & Farm</h1>
                         <div class="form-group">
-                            <div class="form-group"><label for="demoSelect"> Environment</label><select class="custom-select ng-pristine ng-valid ng-touched" id="demoSelect" name="demoSelect">
-                                <option value="SBX"> SBX </option>
-                                <option value="DEV"> DEV </option>
+                            <label class="text-white" for="environmentField">Environment:</label>
+                            <select class="form-control" id="environmentField">
+                                <option value="DEV" selected> DEV </option>
                                 <option value="UAT"> UAT </option>
-                            </select></div>
-                            <div class="form-group"><label for="demoSelect"> Node</label><select class="custom-select ng-pristine ng-valid ng-touched" id="demoSelect" name="demoSelect">
-                                <option value="Brvo"> Bravo </option>
-                                <option value="Dlta"> Delta </option>
-                                <option value="Echo"> Echo </option>
-                                <option value="Golf"> Golf </option>
-                                <option value="Htl"> Hotel </option>    
-                                <option value="Ind"> Indigo </option>                                
-                            </select></div>
-                            <div class="input-group-btn">
-                                <button class="btn btn-default text-uppercase">Search</button>
-                            </div>
+                                <option value="DEV"> PROD </option>
+                            </select>
                         </div>
+                        <div class="form-group">
+                            <label class="text-white" for="farmField">Farm:</label>
+                            <select class="form-control" id="farmField">
+                                <option value="brvo" selected> Bravo </option>
+                                <option value="dlta"> Delta </option>
+                                <option value="echo"> Echo </option>
+                                <option value="golf"> Golf </option>
+                                <option value="htl"> Hotel </option>    
+                                <option value="ind"> Indigo </option>                                
+                            </select>
+                        </div>
+
+                        <button class="btn btn-secondary btn-block my-4 text-uppercase" id="searchBtn">Search</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <%- include('partials/footer') %>
     </body>
 </html>
