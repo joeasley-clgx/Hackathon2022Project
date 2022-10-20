@@ -9,7 +9,7 @@
     <body>
         <%- include('partials/navbar') %>
 
-        <main class="container">
+        <main class="container pb-4">
             <div class="page-title">
                 <div class="headings">
                     <h1 class="header"><%= locals.header %></h1>
@@ -42,10 +42,21 @@
                         <div class="optimal-chart">
                             <canvas id="optimal-chart"></canvas>
                         </div>
+                        <br>
+                        <div class="form-group">
+                            <span>
+                                <label for="exampleId">Idle Threshold:</label>
+                            </span>
+                            <div class="input-group">
+                                <input class="form-control" type="number" id="idleThresholdInput" value="0.015" step="0.001">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
+
+        <%- include('partials/footer') %>
 
         <script>
             let targetedFarm = "fnccuweb<%= locals.subHeader %>".toLowerCase();

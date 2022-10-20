@@ -3,14 +3,16 @@ fetch('/Data.JSON')
     .then((response) => response.json())
     .then((json) => filterData(json.timeSeries));
 
-const idleThreshold = 0.01
+let idleThreshold; // set by input element
 
 function filterData(json) {
     THE_DATA = json.filter(e => e.metric.labels.instance_name.startsWith("fnccuweb"));
     console.log(THE_DATA);
 
+    updateIdleThreshold();
     updateDailyChart();
     updateWeeklyChart();
+    updateOptimalChart();
 }
 
 function getDataSets(name, startTime, endTime) {
@@ -37,38 +39,45 @@ function getDataSets(name, startTime, endTime) {
         });
     }
 
-    console.log(dataSet)
-
     return dataSet;
 }
 
 function getNodeInfo(name){
     if (!THE_DATA) return [];
 
-    let data = [];
     const instanceData = THE_DATA.filter(e => e.metric.labels.instance_name.startsWith(name));
 
-    for (var index in sets) {
-        const totalIdleNodes = instanceData[index].points.reduce((acc, object) => object.value.doubleValue <= idleThreshold ? acc + 1 : acc);
-
-
+    let unusedCount = 0;
+    for (var index in instanceData){
+        if (Math.max(...instanceData[index].points.map(p => p.value.doubleValue)) <= idleThreshold)
+            unusedCount++;
     }
 
-    console.log(data)
-
-    return data;
+    return [instanceData.length - unusedCount, unusedCount];
 }
 
 function updateDailyChart() {
-    dailyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-18T00:00:00'), new Date('2022-10-19T00:00:00'));
+    dailyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-18T12:00:00'), new Date('2022-10-19T12:00:00'));
     dailyChart.update();
 }
 
 function updateWeeklyChart() {
-    weeklyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-12T00:00:00'), new Date('2022-10-19T00:00:00'));
+    weeklyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-12T00:00:00'), new Date('2022-10-19T12:00:00'));
     weeklyChart.update();
 }
 
+function updateOptimalChart() {
+    optimalChart.data.datasets[0].data = getNodeInfo(targetedFarm);
+    optimalChart.update();
+}
+
+function updateIdleThreshold() {
+    idleThreshold = document.getElementById("idleThresholdInput").value;
+    console.log(idleThreshold);
+    updateOptimalChart();
+}
+
+document.getElementById("idleThresholdInput").addEventListener("change", updateIdleThreshold);
 
 // Charts
 const dailyChart = new Chart(document.getElementById('daily-chart'), {
@@ -80,6 +89,14 @@ const dailyChart = new Chart(document.getElementById('daily-chart'), {
                 type: 'time',
                 time: {
                     unit: 'hour'
+                }
+            },
+            y: {
+                ticks: {
+                    callback: function (value) {
+                        console.log(value.toString().substr(0, 5))
+                        return value.toString().substr(0, 5) + '%';
+                    }
                 }
             }
         }
@@ -94,7 +111,15 @@ const weeklyChart = new Chart(document.getElementById('weekly-chart'), {
             x: {
                 type: 'time',
                 time: {
-                    unit: 'hour'
+                    unit: 'day'
+                }
+            },
+            y: {
+                ticks: {
+                    callback: function (value) {
+                        console.log(value.toString().substr(0, 5))
+                        return value.toString().substr(0, 5) + '%';
+                    }
                 }
             }
         }

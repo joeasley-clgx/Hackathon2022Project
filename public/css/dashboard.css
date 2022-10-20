@@ -1,13 +1,19 @@
 .cpu-chart {
-    width: 40vw; 
-    height: 40vh;
+    width: 40em; 
+    height: 20em;
 }
 
 #charts {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .card .card-tile {
     width: fit-content;
+}
+
+.card .card-tile > .card-body {
+    height: min-content;
 }
