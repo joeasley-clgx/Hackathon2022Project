@@ -1,9 +1,10 @@
+let idleThreshold; // set by input element
 let THE_DATA;
+
 fetch('/Data.JSON')
     .then((response) => response.json())
     .then((json) => filterData(json.timeSeries));
 
-let idleThreshold; // set by input element
 
 function filterData(json) {
     THE_DATA = json.filter(e => e.metric.labels.instance_name.startsWith("fnccuweb"));
@@ -15,6 +16,7 @@ function filterData(json) {
     updateOptimalChart();
 }
 
+// Manipulate THE_DATA
 function getDataSets(name, startTime, endTime) {
     if (!THE_DATA) return [];
 
@@ -24,9 +26,10 @@ function getDataSets(name, startTime, endTime) {
     for (var index in sets) {
         const label = sets[index].metric.labels.instance_name;
         // p.interval.startTime and endTime are the same in our mock data
+        // p.value.doubleValue is from 0-1, multiply by 100 to get percentage utilization
         const points = sets[index].points
             .filter(p => new Date(p.interval.endTime) >= startTime && new Date(p.interval.endTime) < endTime)
-            .map(p => { return { x: p.interval.endTime, y: p.value.doubleValue }; });
+            .map(p => { return { x: p.interval.endTime, y: p.value.doubleValue * 100 }; });
 
         const isGreen = label.startsWith(name + 'g')
 
@@ -45,17 +48,19 @@ function getDataSets(name, startTime, endTime) {
 function getNodeInfo(name){
     if (!THE_DATA) return [];
 
+    // Use all data related to a node instead of just a week's time span
     const instanceData = THE_DATA.filter(e => e.metric.labels.instance_name.startsWith(name));
 
     let unusedCount = 0;
     for (var index in instanceData){
-        if (Math.max(...instanceData[index].points.map(p => p.value.doubleValue)) <= idleThreshold)
+        if (Math.max(...instanceData[index].points.map(p => p.value.doubleValue * 100)) <= idleThreshold)
             unusedCount++;
     }
 
     return [instanceData.length - unusedCount, unusedCount];
 }
 
+// Chart updates
 function updateDailyChart() {
     dailyChart.data.datasets = getDataSets(targetedFarm, new Date('2022-10-18T12:00:00'), new Date('2022-10-19T12:00:00'));
     dailyChart.update();

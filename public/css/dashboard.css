@@ -9,11 +9,3 @@
     flex-wrap: wrap;
     align-items: flex-start;
 }
-
-.card .card-tile {
-    width: fit-content;
-}
-
-.card .card-tile > .card-body {
-    height: min-content;
-}

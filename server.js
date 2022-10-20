@@ -15,3 +15,4 @@ app.get('/', (req, res) => {
 app.use('/dashboard', dashboardRouter);
 
 app.listen(3000);
+console.log("Listening on port 3000...");
