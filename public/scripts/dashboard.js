@@ -1,4 +1,5 @@
 let idleThreshold; // set by input element
+let nodeCostPerYear = 6077.76;
 let THE_DATA;
 
 fetch('/Data.JSON')
@@ -81,14 +82,21 @@ function updateWeeklyChart() {
 }
 
 function updateOptimalChart() {
-    optimalChart.data.datasets[0].data = getNodeInfo(targetedFarm);
+    const nodeInfo = getNodeInfo(targetedFarm);
+    optimalChart.data.datasets[0].data = nodeInfo;
     optimalChart.update();
+
+    updateCostAnalysis(nodeInfo[0] + nodeInfo[1], nodeInfo[1]);
 }
 
 function updateIdleThreshold() {
     idleThreshold = document.getElementById("idleThresholdInput").value;
-    console.log(idleThreshold);
     updateOptimalChart();
+}
+
+function updateCostAnalysis(totalNodesCount, unusedNodesCount) {
+    document.getElementById("totalNodeCostField").textContent = (totalNodesCount * nodeCostPerYear).toLocaleString();
+    document.getElementById("unusedNodeCostField").textContent = (unusedNodesCount * nodeCostPerYear).toLocaleString();
 }
 
 document.getElementById("idleThresholdInput").addEventListener("change", updateIdleThreshold);
